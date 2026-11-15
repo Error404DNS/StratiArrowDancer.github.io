@@ -263,15 +263,102 @@ main {flex:1}
   to {opacity:1;transform:translateY(0)}
 }
 
+
+<style>
 .sidebar {
-  align-self:start;
-  position:sticky;
-  top:22px;
-  padding:17px;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:rgba(16,22,41,.9);
+  align-self: start;
+  position: sticky;
+  top: 22px;
+  padding: 17px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: rgba(16, 22, 41, .9);
+  z-index: 10;
 }
+
+.nav-link.active {
+  background: rgba(110, 130, 255, .2);
+  border-color: var(--line);
+  color: #fff;
+}
+</style>
+
+<script>
+// Aggiorna la voce attiva
+function setActiveNav(target) {
+  document.querySelectorAll(".nav-link[data-target]").forEach(link => {
+    link.classList.toggle("active", link.dataset.target === target);
+  });
+}
+
+// Gestione click sulla sidebar
+document.querySelectorAll(".nav-link[data-target]").forEach(link => {
+  link.addEventListener("click", event => {
+    event.preventDefault();
+
+    const target = link.dataset.target;
+    const elements = {
+      overview: document.querySelector(".welcome-row"),
+      forumsSection: document.getElementById("forumsSection"),
+      requestArea: document.getElementById("requestArea")
+    };
+
+    const element = elements[target];
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    setActiveNav(target);
+  });
+});
+
+// Sezioni da monitorare durante lo scorrimento
+const sectionsToObserve = [
+  {
+    element: document.querySelector(".welcome-row"),
+    target: "overview"
+  },
+  {
+    element: document.getElementById("forumsSection"),
+    target: "forumsSection"
+  },
+  {
+    element: document.getElementById("requestArea"),
+    target: "requestArea"
+  }
+].filter(section => section.element);
+
+const sectionObserver = new IntersectionObserver(entries => {
+  const visible = entries
+    .filter(entry => entry.isIntersecting)
+    .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+  if (visible.length) {
+    const section = sectionsToObserve.find(
+      item => item.element === visible[0].target
+    );
+
+    if (section) {
+      setActiveNav(section.target);
+    }
+  }
+}, {
+  threshold: 0,
+  rootMargin: "-20% 0px -65% 0px"
+});
+
+sectionsToObserve.forEach(section => {
+  sectionObserver.observe(section.element);
+});
+
+// Gestione callback OAuth
+consumeOAuthCallback();
+</script>
+
 
 .side-label {
   font-size:9px;
