@@ -530,6 +530,48 @@ main {flex:1}
   font-size:20px;
 }
 
+.forum-icon-secret {
+  width:auto;
+  min-width:42px;
+  height:auto;
+  min-height:42px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  background:transparent;
+}
+
+.secret-diamond-button {
+  border:0;
+  padding:0 5px;
+  background:transparent;
+  color:inherit;
+  font:inherit;
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+}
+
+.secret-diamond-button:hover {
+  transform:scale(1.16);
+  filter:drop-shadow(0 0 6px #8d7cff);
+}
+
+.secret-diamond-hint {
+  color:#929bb9;
+  font-size:7px;
+  line-height:1;
+  white-space:nowrap;
+  letter-spacing:.02em;
+}
+
+.forum.locked .secret-diamond-button {
+  pointer-events:auto;
+  cursor:pointer;
+}
+
 .forum-status {
   font-size:8px;
   letter-spacing:.08em;
@@ -697,52 +739,6 @@ textarea.field {
 
 .social-link svg {width:20px;height:20px;fill:currentColor;flex:none}
 
-
-.easter-egg-letter {
-  display:inline;
-  cursor:pointer;
-  color:inherit;
-}
-.easter-egg-letter:focus-visible {
-  outline:2px solid var(--purple);
-  outline-offset:3px;
-  border-radius:3px;
-}
-.secret-screen {
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:grid;
-  place-items:center;
-  padding:24px;
-  background:rgba(5,7,18,.94);
-  backdrop-filter:blur(10px);
-}
-.secret-screen.hidden {display:none!important}
-.secret-card {
-  width:min(100%,520px);
-  padding:38px 28px;
-  text-align:center;
-  border:1px solid rgba(177,169,255,.28);
-  border-radius:24px;
-  background:linear-gradient(145deg,#25234c,#142b45);
-  box-shadow:0 24px 80px rgba(0,0,0,.5);
-  animation:fadeUp .35s ease both;
-}
-.secret-card h2 {
-  font:700 clamp(22px,4vw,30px) "Space Grotesk";
-  line-height:1.35;
-}
-.secret-close {
-  margin-top:25px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:11px 18px;
-  color:var(--text);
-  background:#ffffff0d;
-  font-weight:700;
-}
-
 .toast {
   position:fixed;
   right:22px;
@@ -755,6 +751,108 @@ textarea.field {
   background:#171f35;
   color:#dce3fa;
   font-size:12px;
+}
+
+/* POPUP SEGRETO */
+
+.secret-trigger {
+  display:inline-block;
+  margin-top:8px;
+  padding:0;
+  border:0;
+  background:none;
+  color:#687493;
+  font:inherit;
+  font-size:9px;
+  letter-spacing:.08em;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.secret-trigger:hover {
+  color:#b8aaff;
+  text-shadow:0 0 12px #8d7cff80;
+}
+
+.secret-overlay {
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:rgba(3,5,15,.82);
+  backdrop-filter:blur(10px);
+  opacity:0;
+  visibility:hidden;
+  transition:.25s ease;
+}
+
+.secret-overlay.open {
+  opacity:1;
+  visibility:visible;
+}
+
+.secret-box {
+  position:relative;
+  width:min(100%,440px);
+  padding:36px 28px;
+  border:1px solid #a69aff55;
+  border-radius:24px;
+  text-align:center;
+  background:linear-gradient(145deg,#242047,#121c35);
+  box-shadow:0 25px 90px #0009,0 0 40px #8d7cff20;
+  transform:translateY(18px) scale(.97);
+  transition:.25s ease;
+}
+
+.secret-overlay.open .secret-box {
+  transform:translateY(0) scale(1);
+}
+
+.secret-icon {
+  width:64px;
+  height:64px;
+  margin:0 auto 17px;
+  display:grid;
+  place-items:center;
+  border-radius:20px;
+  background:linear-gradient(135deg,#8d7cff,#5d8dff);
+  font-size:29px;
+}
+
+.secret-box h2 {
+  font:700 25px "Space Grotesk";
+  margin-bottom:12px;
+}
+
+.secret-box p {
+  color:#b5bedb;
+  font-size:13px;
+  line-height:1.8;
+}
+
+.secret-close {
+  position:absolute;
+  top:13px;
+  right:14px;
+  width:34px;
+  height:34px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#ffffff08;
+  color:white;
+  font-size:19px;
+}
+
+.secret-close:hover {
+  background:#ff789525;
+  border-color:#ff789550;
+}
+
+.secret-action {
+  margin-top:23px;
+  padding:12px 23px;
 }
 
 @media(max-width:900px) {
@@ -843,8 +941,8 @@ textarea.field {
         <span class="feature-pill">✧ Progressi personali</span>
         <span class="feature-pill">◇ Forum esclusivi</span>
         <span class="feature-pill" style="cursor:pointer;" onclick="navigator.clipboard.writeText('staff_help.oversold671@passinbox.com').then(() => alert('Email dello staff copiata!')).catch(() => alert('Impossibile copiare l’email.'));">
-  ✉ Contatto staff
-</span>
+          ✉ Contatto staff
+        </span>
       </div>
     </div>
 
@@ -900,7 +998,7 @@ textarea.field {
   <div>
     <div class="eyebrow">PANORAMICA MEMBRO</div>
     <h1>Benvenuto, <span id="welcomeName">membro</span>.</h1>
-    <p>Questo è il riepil<span class="easter-egg-letter" role="button" tabindex="0" aria-label="Lettera nascosta">q</span>ogo del tuo percorso nella community.</p>
+    <p>Questo è il riepilogo del tuo percorso nella community.</p>
   </div>
 
   <div class="member-chip">
@@ -976,6 +1074,16 @@ textarea.field {
       <h2>Resta in contatto</h2>
       <p>Seguimi sui social per aggiornamenti e novità della community.</p>
       <div class="footer-copy">DISCORD PORTAL · MEMBER HUB</div>
+
+      <!-- PAROLA SEGRETA CLICCABILE -->
+      <button
+        class="secret-trigger"
+        id="secretTrigger"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="secretPopup">
+        ✦ SEGRATA
+      </button>
     </div>
 
     <nav class="social-bar" aria-label="Link social">
@@ -1002,16 +1110,47 @@ textarea.field {
   </div>
 </footer>
 
-<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+<!-- POPUP SEGRETO -->
+<div
+  class="secret-overlay"
+  id="secretPopup"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="secretTitle"
+  aria-hidden="true">
 
-<div id="secretScreen" class="secret-screen hidden" role="dialog"
-     aria-modal="true" aria-labelledby="secretMessage">
-  <div class="secret-card">
-    <h2 id="secretMessage">Hai trovato la parola nascosta, vai a dire Dexter ad un mod</h2>
-    <button type="button" class="secret-close" id="secretClose">Chiudi</button>
+  <div class="secret-box">
+    <button
+      class="secret-close"
+      id="secretClose"
+      type="button"
+      aria-label="Chiudi popup">
+      ×
+    </button>
+
+    <div class="secret-icon">✦</div>
+
+    <div class="eyebrow">AREA SEGRETA</div>
+
+    <h2 id="secretTitle">Hai trovato il segreto!</h2>
+
+    <p>
+      Complimenti! Hai scoperto una piccola sorpresa nascosta
+      nel Discord Portal.
+      <br><br>
+      Benvenuto nell'area segreta della community.
+    </p>
+
+    <button
+      class="primary-btn secret-action"
+      id="secretOkay"
+      type="button">
+      Fantastico!
+    </button>
   </div>
 </div>
 
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
 <script>
 
@@ -1025,6 +1164,7 @@ const CONFIG = {
   redirectUri: window.location.origin + window.location.pathname,
   roleIds: ["1553432316422918174", "1553432391580651641", "1553432451219456030", "1553432447822200964", "1553432822243655750"]
 };
+
 const forumData = [
   {level:50, clubId:"club1", title:"Forum 1", icon:"💎"},
   {level:100, clubId:"club2", title:"Forum 2", icon:"🔱"},
@@ -1041,6 +1181,40 @@ let selectedForum = "";
 let toastTimer;
 
 const $ = id => document.getElementById(id);
+
+/* POPUP SEGRETO */
+
+function openSecret() {
+  const popup = $("secretPopup");
+  popup.classList.add("open");
+  popup.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  $("secretClose").focus();
+}
+
+function closeSecret() {
+  const popup = $("secretPopup");
+  popup.classList.remove("open");
+  popup.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+  $("secretTrigger").focus();
+}
+
+$("secretTrigger").addEventListener("click", openSecret);
+$("secretClose").addEventListener("click", closeSecret);
+$("secretOkay").addEventListener("click", closeSecret);
+
+$("secretPopup").addEventListener("click", event => {
+  if (event.target === $("secretPopup")) {
+    closeSecret();
+  }
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && $("secretPopup").classList.contains("open")) {
+    closeSecret();
+  }
+});
 
 /* LIVELLO E AUTORIZZAZIONI */
 
@@ -1073,47 +1247,81 @@ function login() {
     $("message").textContent = "Configurazione incompleta: inserisci Client ID, ID server e i cinque ID ruolo.";
     return;
   }
+
   const state = crypto.randomUUID();
   sessionStorage.setItem("oauth_state", state);
-  const params = new URLSearchParams({client_id:CONFIG.clientId, response_type:"token", redirect_uri:CONFIG.redirectUri, scope:"identify guilds.members.read", state});
+
+  const params = new URLSearchParams({
+    client_id:CONFIG.clientId,
+    response_type:"token",
+    redirect_uri:CONFIG.redirectUri,
+    scope:"identify guilds.members.read",
+    state
+  });
+
   window.location.assign("https://discord.com/oauth2/authorize?" + params.toString());
 }
 
 async function completeLogin(token) {
   currentToken = token;
   const headers = {Authorization:"Bearer " + token};
+
   const [userResponse, memberResponse] = await Promise.all([
     fetch("https://discord.com/api/users/@me", {headers}),
     fetch(`https://discord.com/api/users/@me/guilds/${encodeURIComponent(CONFIG.guildId)}/member`, {headers})
   ]);
+
   if (!userResponse.ok) throw new Error("Sessione Discord non valida o scaduta.");
-  if (!memberResponse.ok) throw new Error(memberResponse.status === 404 ? "Devi essere membro del server Discord." : "Impossibile verificare i ruoli del server.");
+
+  if (!memberResponse.ok) {
+    throw new Error(memberResponse.status === 404
+      ? "Devi essere membro del server Discord."
+      : "Impossibile verificare i ruoli del server.");
+  }
+
   currentUser = await userResponse.json();
   const member = await memberResponse.json();
   const roles = new Set(member.roles || []);
+
   currentLevel = 0;
-  CONFIG.roleIds.forEach((roleId, index) => { if (!roleId.startsWith("ID_RUOLO_") && roles.has(roleId)) currentLevel = [50,100,150,200,250][index]; });
+
+  CONFIG.roleIds.forEach((roleId, index) => {
+    if (!roleId.startsWith("ID_RUOLO_") && roles.has(roleId)) {
+      currentLevel = [50,100,150,200,250][index];
+    }
+  });
+
   currentUsername = currentUser.global_name || currentUser.username || "membro";
   selectedForum = "";
+
   $("loginBox").classList.add("hidden");
   $("content").classList.remove("hidden");
   $("userInfo").textContent = currentUsername;
   $("welcomeName").textContent = currentUsername;
+
   const avatar = $("avatarLetter");
   avatar.replaceChildren();
+
   if (currentUser.avatar) {
     const image = document.createElement("img");
     const avatarFormat = currentUser.avatar.startsWith("a_") ? "gif" : "png";
+
     image.src = `https://cdn.discordapp.com/avatars/${currentUser.id}/${currentUser.avatar}.${avatarFormat}?size=96`;
     image.alt = "";
+
     image.onerror = () => {
       avatar.replaceChildren();
       avatar.textContent = currentUsername.charAt(0).toUpperCase();
     };
+
     avatar.append(image);
-  } else avatar.textContent = currentUsername.charAt(0).toUpperCase();
+  } else {
+    avatar.textContent = currentUsername.charAt(0).toUpperCase();
+  }
+
   $("levelInfo").textContent = "LIVELLO " + currentLevel;
   $("statLevel").textContent = currentLevel;
+
   renderProgress(currentLevel);
   renderForums(currentLevel);
   setActiveNav("overview");
@@ -1121,16 +1329,34 @@ async function completeLogin(token) {
 
 function consumeOAuthCallback() {
   if (!window.location.hash) return;
+
   const params = new URLSearchParams(window.location.hash.slice(1));
   const token = params.get("access_token");
   const error = params.get("error_description") || params.get("error");
   const returnedState = params.get("state");
+
   history.replaceState(null, "", window.location.pathname + window.location.search);
-  if (error) { $("message").textContent = "Accesso Discord non completato: " + error; return; }
+
+  if (error) {
+    $("message").textContent = "Accesso Discord non completato: " + error;
+    return;
+  }
+
   if (!token) return;
-  if (!returnedState || returnedState !== sessionStorage.getItem("oauth_state")) { $("message").textContent = "Verifica di sicurezza OAuth non riuscita."; return; }
+
+  if (!returnedState || returnedState !== sessionStorage.getItem("oauth_state")) {
+    $("message").textContent = "Verifica di sicurezza OAuth non riuscita.";
+    return;
+  }
+
   sessionStorage.removeItem("oauth_state");
-  completeLogin(token).catch(error => { currentToken = ""; currentUser = null; currentLevel = -1; $("message").textContent = error.message; });
+
+  completeLogin(token).catch(error => {
+    currentToken = "";
+    currentUser = null;
+    currentLevel = -1;
+    $("message").textContent = error.message;
+  });
 }
 
 /* PROGRESSI */
@@ -1283,7 +1509,6 @@ function openStaffForm(card) {
   `;
 
   area.append(section);
-
   $("staffForm").addEventListener("submit", sendStaffRequest);
 
   area.scrollIntoView({behavior:"smooth", block:"start"});
@@ -1311,6 +1536,7 @@ async function sendStaffRequest(event) {
     state.textContent = "Compila tutti i campi.";
     return;
   }
+
   if (CONFIG.workerUrl.startsWith("INSERISCI_")) {
     state.style.color = "var(--red)";
     state.textContent = "Configurazione incompleta: inserisci l'URL del Cloudflare Worker.";
@@ -1323,7 +1549,10 @@ async function sendStaffRequest(event) {
   try {
     const response = await fetch(CONFIG.workerUrl, {
       method:"POST",
-      headers:{"Content-Type":"application/json", Authorization:"Bearer " + currentToken},
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:"Bearer " + currentToken
+      },
       body:JSON.stringify({
         clubId:"staff",
         type:"staff_application",
@@ -1363,7 +1592,6 @@ async function sendStaffRequest(event) {
 /* APERTURA FORUM NORMALI */
 
 function openNormalForum(card, forum) {
-
   if (!canAccessForum(forum)) {
     showToast("Forum bloccato! Livello richiesto: " + forum.level);
     return;
@@ -1447,7 +1675,6 @@ function renderForums(level) {
   container.replaceChildren();
   requestArea.replaceChildren();
 
-  // Forum 0 sempre disponibile dopo il login
   renderStaffForum(container);
 
   const unlockedCount = forumData.filter(
@@ -1470,7 +1697,6 @@ function renderForums(level) {
     const card = document.createElement("article");
 
     card.className = unlocked ? "forum" : "forum locked";
-
     card.dataset.forum = forum.title;
     card.setAttribute("aria-disabled", String(!unlocked));
 
@@ -1484,7 +1710,11 @@ function renderForums(level) {
 
     card.innerHTML = `
       <div class="forum-head">
-        <div class="forum-icon">${forum.icon}</div>
+        <div class="forum-icon ${forum.icon === "💎" ? "forum-icon-secret" : ""}">
+          ${forum.icon === "💎"
+            ? '<button class="secret-diamond-button" type="button" aria-label="Scopri il codice segreto">💎</button><small class="secret-diamond-hint">tienilo segreto</small>'
+            : forum.icon}
+        </div>
         <span class="forum-status">
           ${unlocked ? "● DISPONIBILE" : "🔒 BLOCCATO"}
         </span>
@@ -1502,6 +1732,13 @@ function renderForums(level) {
         LIVELLO RICHIESTO <strong>${forum.level}</strong>
       </div>
     `;
+
+    if (forum.icon === "💎") {
+      card.querySelector(".secret-diamond-button").addEventListener("click", event => {
+        event.stopPropagation();
+        showToast('Hai trovato il codice segreto, "IDX" vallo a dire ad un mod');
+      });
+    }
 
     if (unlocked) {
       const open = () => openNormalForum(card, forum);
@@ -1549,6 +1786,7 @@ async function sendRequest(event, forum) {
     state.textContent = "Compila entrambi i campi.";
     return;
   }
+
   if (CONFIG.workerUrl.startsWith("INSERISCI_")) {
     state.style.color = "var(--red)";
     state.textContent = "Configurazione incompleta: inserisci l'URL del Cloudflare Worker.";
@@ -1561,7 +1799,10 @@ async function sendRequest(event, forum) {
   try {
     const response = await fetch(CONFIG.workerUrl, {
       method:"POST",
-      headers:{"Content-Type":"application/json", Authorization:"Bearer " + currentToken},
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:"Bearer " + currentToken
+      },
       body:JSON.stringify({
         clubId:forum.clubId,
         type:"normal_request",
@@ -1655,36 +1896,6 @@ function logout() {
 }
 
 /* EVENTI */
-
-
-const hiddenLetter = document.querySelector(".easter-egg-letter");
-const secretScreen = $("secretScreen");
-
-function openSecretScreen() {
-  secretScreen.classList.remove("hidden");
-  $("secretClose").focus();
-}
-function closeSecretScreen() {
-  secretScreen.classList.add("hidden");
-  hiddenLetter.focus();
-}
-
-hiddenLetter.addEventListener("click", openSecretScreen);
-hiddenLetter.addEventListener("keydown", event => {
-  if (event.key === "Enter" || event.key === " ") {
-    event.preventDefault();
-    openSecretScreen();
-  }
-});
-$("secretClose").addEventListener("click", closeSecretScreen);
-secretScreen.addEventListener("click", event => {
-  if (event.target === secretScreen) closeSecretScreen();
-});
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && !secretScreen.classList.contains("hidden")) {
-    closeSecretScreen();
-  }
-});
 
 $("loginButton").addEventListener("click", login);
 $("logoutButton").addEventListener("click", logout);
